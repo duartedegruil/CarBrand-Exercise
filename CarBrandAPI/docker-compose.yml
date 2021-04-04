@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  carbrand-api:
+    image: carbrand
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: carbrand-api
+    ports:
+      - "8080:80"
+    depends_on:
+      - carbrand-db
+  carbrand-db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      SA_PASSWORD: "Password@123"
+      ACCEPT_EULA: "Y"
+    container_name: carbrand-db
+    ports:
+      - "14331:1433"

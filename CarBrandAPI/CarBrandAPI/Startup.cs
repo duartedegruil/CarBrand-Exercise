@@ -54,6 +54,9 @@ namespace CarBrandAPI
             {
                 endpoints.MapControllers();
             });
+
+            // Initialize database migration
+            DatabaseManagementService.MigrationInitialization(app);
         }
     }
 }
