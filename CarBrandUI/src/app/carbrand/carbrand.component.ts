@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Carbrand } from './carbrand';
-import { FormBuilder, Validators } from '@angular/forms'; 
+import { FormBuilder, Validators } from '@angular/forms';
 import { CarbrandService } from './carbrand.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-carbrand',
   templateUrl: './carbrand.component.html',
-  styleUrls: ['./carbrand.component.css']
+  styleUrls: ['./carbrand.component.css'],
 })
 export class CarbrandComponent implements OnInit {
-
   /**
    * Page grid row height.
    *
@@ -34,7 +34,7 @@ export class CarbrandComponent implements OnInit {
    * @memberof CarbrandComponent
    */
   carBrandCreateForm: any;
-  
+
   /**
    * Car brand image to be uploaded.
    *
@@ -50,7 +50,7 @@ export class CarbrandComponent implements OnInit {
    * @memberof CarbrandComponent
    */
   carBrandSearchForm: any;
-  
+
   /**
    * Car brand name retrieved from server.
    *
@@ -74,10 +74,10 @@ export class CarbrandComponent implements OnInit {
    * @param carBrandService The carBrandService.
    */
   constructor(
-    private breakpointObserver: BreakpointObserver, 
-    private formbuilder: FormBuilder, 
-    private carBrandService: CarbrandService) 
-  { }
+    private breakpointObserver: BreakpointObserver,
+    private formbuilder: FormBuilder,
+    private carBrandService: CarbrandService
+  ) {}
 
   /**
    * Action called on page initialization.
@@ -85,32 +85,27 @@ export class CarbrandComponent implements OnInit {
   ngOnInit(): void {
     this.detectBreakpoint();
 
-    this.carBrandCreateForm = this.formbuilder.group({  
+    this.carBrandCreateForm = this.formbuilder.group({
       Name: ['', [Validators.required]],
-      Image: ['', [Validators.required]]
+      Image: ['', [Validators.required]],
     });
 
-    this.carBrandSearchForm = this.formbuilder.group({  
-      Name: ['', [Validators.required]]
+    this.carBrandSearchForm = this.formbuilder.group({
+      Name: ['', [Validators.required]],
     });
   }
 
   /**
    * Action called on submission of form to create car brand.
    */
-  onCreateFormSubmit() {  
+  onCreateFormSubmit() {
     this.dataSaved = false;
 
     // Define Image as Base64 content
     this.carBrandCreateForm.value.Image = this.imageSrc;
 
-    const carBrand = this.carBrandCreateForm.value;  
+    const carBrand = this.carBrandCreateForm.value;
     this.createCarBrand(carBrand);
-
-    // Breaks if done inside subscribe
-    alert(`Car brand '${carBrand.Name}' created successfully!`);
-    this.carBrandCreateForm.reset();
-    this.imageSrc = '';
   }
 
   /**
@@ -147,24 +142,35 @@ export class CarbrandComponent implements OnInit {
    * @param {string} carBrandName The Car Brand Name.
    */
   private getCarBrandByName(carBrandName: string) {
-    this.carBrandService.getCarBrandByName(carBrandName).subscribe(carBrand => {
-      this.retrievedName = carBrand.name;
-      this.retrievedImage = carBrand.image;
-    }, error => {
-      alert(`CarBrand '${carBrandName}' could not be found.`);
-    });
+    this.carBrandService.getCarBrandByName(carBrandName).subscribe(
+      (carBrand) => {
+        this.retrievedName = carBrand.name;
+        this.retrievedImage = carBrand.image;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.error);
+      }
+    );
   }
 
   /**
    * Method to Create the Car Brand.
    * @param {Carbrand} carBrand The Car Brand to be created.
    */
-  private createCarBrand(carBrand: Carbrand) {  
-    this.carBrandService.createCarBrand(carBrand).subscribe(  
-      () => {  
+  private createCarBrand(carBrand: Carbrand) {
+    this.carBrandService.createCarBrand(carBrand).subscribe(
+      () => {
         this.dataSaved = true;
-      }  
-    ); 
+        alert(
+          `Car brand '${this.carBrandCreateForm.value.Name}' created successfully!`
+        );
+        this.carBrandCreateForm.reset();
+        this.imageSrc = '';
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.error);
+      }
+    );
   }
 
   /**
@@ -180,8 +186,10 @@ export class CarbrandComponent implements OnInit {
    * Method to handle page the page size.
    */
   private detectBreakpoint(): void {
-    this.breakpointObserver.observe(['(max-width: 500px)']).subscribe(result => {
-      this.rowHeight = result.matches ? '100vh' : '85vh';
-    });
+    this.breakpointObserver
+      .observe(['(max-width: 500px)'])
+      .subscribe((result) => {
+        this.rowHeight = result.matches ? '100vh' : '85vh';
+      });
   }
 }

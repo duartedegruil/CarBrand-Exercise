@@ -4,7 +4,8 @@ export class GlobalConstants {
      *
      * @type {string}
      */
-    public static baseURL: string = "http://localhost:8080";
+    //public static baseURL: string = "http://localhost:8080";
+    public static baseURL: string = "https://localhost:5001";
 
     /**
      * Car Brand Endpoint.
