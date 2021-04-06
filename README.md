@@ -5,9 +5,9 @@ This project was developed as an exercise for the coding interview at Primavera 
 
 The solution consists in a three-tier architecture:
 
-- Data Layer :: Microsoft SQL Server Database
-- Application Layer :: ASP.NET Core Web API
-- Presentation Layer :: Angular 11
+- Data Layer - Microsoft SQL Server Database
+- Application Layer - ASP.NET Core Web API
+- Presentation Layer - Angular 11
 
 It allows the user to persist car brands and their respective logos, and retrieve them by name.
 
@@ -19,3 +19,9 @@ In order to build and start the composed Docker containers, the *Run_DockerCompo
 
 - CarBrandAPI/CarBrandAPI/appsettings.json
 - Tools/docker-compose.yml
+
+The ports configured by default are:
+
+- Data Layer - 14331:1433
+- Application Layer - 8080:80
+- Presentation Layer - 4200:80
