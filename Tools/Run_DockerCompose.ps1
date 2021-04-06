@@ -1,3 +1,4 @@
+$uiContainer = "carbrand-ui";
 $apiContainer = "carbrand-api";
 $dbContainer = "carbrand-db";
 
@@ -11,8 +12,6 @@ else
 {
 	try
 	{
-		Set-Location -Path "$PSScriptRoot\..\CarBrandAPI"
-
 		## Build the api and db services
 		docker-compose build
 		
@@ -20,11 +19,16 @@ else
 		docker-compose up --no-start
 		
 		## Start containers in specific order
+		$ui = docker inspect $uiContainer
 		$api = docker inspect $apiContainer
 		$db = docker inspect $dbContainer
 		
+		$jsonUI = $ui | ConvertFrom-Json
 		$jsonAPI = $api | ConvertFrom-Json
 		$jsonDB = $db | ConvertFrom-Json
+		
+		$uiContainerExists = ($jsonUI.State.PSobject.Properties.Name -match "Health") -eq "Health"
+		$uiContainerExists = !($uiContainerExists -eq $False)
 		
 		$apiContainerExists = ($jsonAPI.State.PSobject.Properties.Name -match "Health") -eq "Health"
 		$apiContainerExists = !($apiContainerExists -eq $False)
@@ -41,6 +45,11 @@ else
 		# Start API container
 		if ($apiContainerExists -and !($jsonAPI.State.Status -eq "running")) {
 			docker-compose start $apiContainer
+		}
+		
+		# Start UI container
+		if ($uiContainerExists -and !($jsonUI.State.Status -eq "running")) {
+			docker-compose start $uiContainer
 		}
 	}
 	catch

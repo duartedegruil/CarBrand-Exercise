@@ -1,11 +1,21 @@
 version: '3.4'
 
 services:
+  carbrand-ui:
+    image: angular-app
+    build:
+      context: ../CarBrandUI
+      dockerfile: ../CarBrandUI/Dockerfile
+    container_name: carbrand-ui
+    ports:
+      - "4200:80"
+    depends_on:
+      - carbrand-api
   carbrand-api:
     image: carbrand
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../CarBrandAPI
+      dockerfile: ../CarBrandAPI/Dockerfile
     container_name: carbrand-api
     ports:
       - "8080:80"
