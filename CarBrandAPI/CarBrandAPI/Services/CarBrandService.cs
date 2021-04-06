@@ -6,7 +6,6 @@ using CarBrandAPI.Services.Interfaces;
 using CarBrandAPI.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CarBrandAPI.Services
@@ -34,6 +33,13 @@ namespace CarBrandAPI.Services
                 throw new ArgumentNullException(Constants.NoInformationPassedToCreateCarBrand);
             }
 
+            // Validate if CarBrand name already exists in the database
+            bool wasCarBrandCreated = await _dbContext.CarBrands.FirstOrDefaultAsync(e => e.Name == carBrandDTO.Name) != null;
+            if (wasCarBrandCreated)
+            {
+                throw new Exception(string.Format(Constants.CarBrandAlreadyExists, carBrandDTO.Name));
+            }
+
             CarBrand carBrand = _mapper.Map<CarBrand>(carBrandDTO);
 
             carBrand = _dbContext.Set<CarBrand>().Add(carBrand).Entity;
@@ -54,7 +60,7 @@ namespace CarBrandAPI.Services
                 throw new ArgumentException(Constants.NoNameSpecifiedForCarBrand);
             }
 
-            CarBrand carBrand = await _dbContext.CarBrands.Where(e => e.Name == name).FirstOrDefaultAsync();
+            CarBrand carBrand = await _dbContext.CarBrands.FirstOrDefaultAsync(e => e.Name == name);
 
             CarBrandDTO carBrandDTO = _mapper.Map<CarBrandDTO>(carBrand);
 
