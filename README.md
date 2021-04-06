@@ -13,9 +13,9 @@ It allows the user to persist car brands and their respective logos, and retriev
 
 **How to use**
 
-This solution runs in Docker aggregated containers, allowing each service to run in its own environment.
+This solution runs in Docker aggregated Linux containers, allowing each service to run in its own environment.
 
-In order to build and start the composed Docker containers, the *Run_DockerCompose.ps1* script is included in the Tools directory. Before running this script, a small tweak is needed to allow the Web API to communicate with the Database. The user will need to change the credentials set in the connection string of the Web API (then rebuild the solution), as well as the ones used to build the DB Docker Image. These changes need to be made in the following files:
+In order to build and start the composed Docker containers, the *Run_DockerCompose.ps1* script is included in the Tools directory. Before running this script, a small tweak is needed to allow the Web API to communicate with the Database. The user will need to change the credentials set in the connection string of the Web API (then rebuild the solution), as well as the ones used to build the DB Docker Image. These changes need to be made in the following files (Password was set to *Password@123* by default):
 
 - CarBrandAPI/CarBrandAPI/appsettings.json
 - Tools/docker-compose.yml
