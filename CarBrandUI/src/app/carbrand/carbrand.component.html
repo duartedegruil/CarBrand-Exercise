@@ -1,0 +1,61 @@
+<mat-toolbar class="top-toolbar">
+    <span>Car Brand Finder</span>
+</mat-toolbar>
+
+<mat-grid-list cols="2" [rowHeight]="rowHeight">
+    <mat-grid-tile>
+        <form [formGroup]="carBrandCreateForm" (ngSubmit)="onCreateFormSubmit()">
+            <table>
+                <tr>
+                    <h1>Create car brand</h1>
+                </tr>
+                <tr> 
+                  <td class="tblrow"> 
+                    <div> 
+                      <input formControlName="Name" matTooltip="Input the name of the car brand" matInput placeholder="Car brand name"> 
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="tblrow"> 
+                    <div class="image-upload">
+                        <img [src]="imageSrc" style="max-width:300px;max-height:300px"/>
+                        <input formControlName="Image" matTooltip="Input the car brand logo" name="imageUrl" type="file" accept="image/*" (change)="handleInputChange($event)"/>
+                    </div> 
+                  </td> 
+                </tr> 
+                <tr>
+                  <td class="content-center"> 
+                    <button type="submit" mat-raised-button color="accent" [disabled]="!carBrandCreateForm.valid">Create</button>
+                  </td>
+                  <td></td>
+                </tr> 
+            </table>
+        </form>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <form [formGroup]="carBrandSearchForm" (ngSubmit)="onSearchFormSubmit()">
+            <table>
+                <tr>
+                    <h1>Search car brand</h1>
+                    <b>{{retrievedName}}</b>
+                </tr>
+                <tr>
+                  <td class="tblrow">
+                    <div>
+                      <img [src]="retrievedImage" style="max-width:300px;max-height:300px"/>
+                      <input formControlName="Name" matTooltip="Input the name of the car brand" matInput placeholder="Car brand name"> 
+                    </div>
+                  </td>
+                </tr>
+                <tr></tr>
+                <tr>
+                  <td class="content-center"> 
+                    <button type="submit" mat-raised-button color="accent" [disabled]="!carBrandSearchForm.valid">Search</button>
+                  </td>
+                  <td></td>
+                </tr> 
+            </table>
+        </form>
+    </mat-grid-tile>
+</mat-grid-list>

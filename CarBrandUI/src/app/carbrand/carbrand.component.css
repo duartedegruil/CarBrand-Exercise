@@ -1,0 +1,27 @@
+.top-toolbar {
+    background-image: linear-gradient(to right, black, white);
+    color: white;
+}
+
+.mat-grid-list {
+    width: 99.8%;
+    background-color: whitesmoke;
+}
+
+.mat-grid-tile {
+    border: solid 2px black;
+}
+
+.car-brand-name-input {
+    width: 200px;
+}
+
+.mat-form-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.tblrow {
+    width: 400px;
+}
