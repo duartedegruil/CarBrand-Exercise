@@ -1,6 +1,7 @@
 ﻿using CarBrandAPI.DTO;
 using CarBrandAPI.Services.Interfaces;
 using CarBrandAPI.Utilities;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -28,6 +29,7 @@ namespace CarBrandAPI.Controllers
         /// <param name="name">The CarBrand name.</param>
         /// <returns>The CarBrand.</returns>
         [HttpGet("{name}")]
+        [EnableCors("EnableCORS")]
         public async Task<IActionResult> GetCarBrandByName([FromRoute] string name)
         {
             CarBrandDTO output;
@@ -51,6 +53,7 @@ namespace CarBrandAPI.Controllers
         /// <param name="carBrand">The CarBrand.</param>
         /// <returns>Success/Error message.</returns>
         [HttpPost]
+        [EnableCors("EnableCORS")]
         public async Task<IActionResult> CreateCarBrand([FromBody] CarBrandDTO carBrand)
         {
             CarBrandDTO output;
